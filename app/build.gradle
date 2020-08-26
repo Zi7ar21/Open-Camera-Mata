@@ -1,0 +1,44 @@
+apply plugin: 'com.android.application'
+
+android {
+    compileSdkVersion 28
+    compileOptions.encoding = 'UTF-8'
+
+    defaultConfig {
+        applicationId "net.sourceforge.opencamera"
+        minSdkVersion 15
+        targetSdkVersion 28
+
+        renderscriptTargetApi 21
+        //renderscriptSupportModeEnabled true // don't use support library as it bloats the APK, and we don't need pre-4.4 support
+        // need build tools at least 20 at least to support ScriptIntrinsicHistogram
+        // also need build tools at least 21 to avoid Google Play 64-bit warning (required from 1 August 2019)
+
+        testApplicationId "net.sourceforge.opencamera.test"
+        testInstrumentationRunner "android.test.InstrumentationTestRunner"
+    }
+
+    buildTypes {
+        release {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.txt'
+        }
+    }
+
+    lintOptions {
+        abortOnError false
+        checkReleaseBuilds false
+    }
+
+    // needed to use android.test package (ActivityInstrumentationTestCase2 etc) when targetting sdk 28 (Android 9) -
+    // see https://developer.android.com/training/testing/set-up-project
+    useLibrary 'android.test.runner'
+    useLibrary 'android.test.base'
+    //useLibrary 'android.test.mock'
+}
+
+dependencies {
+    implementation 'androidx.legacy:legacy-support-v4:1.0.0'
+    implementation 'androidx.exifinterface:exifinterface:1.2.0'
+    testImplementation 'junit:junit:4.12'
+}
